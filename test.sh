@@ -378,7 +378,7 @@ log /etc/openvpn/server/tcpserver.log
 status /etc/openvpn/server/tcpclient.log
 verb 3' >/etc/openvpn/server.conf
 
-        /bin/cat <<"BytesPH" >/etc/openvpn/login/auth_vpn
+        /bin/cat <<"BytesPH1" >/etc/openvpn/login/auth_vpn
 #!/bin/bash
 readarray -t lines < $1
 USERNAME=${lines[0]}
@@ -399,10 +399,10 @@ else
 fi
 
 
-BytesPH
+BytesPH1
 
         #client-connect file
-        cat <<"BytesPH" >/etc/openvpn/login/connect.sh
+        cat <<"BytesPH2" >/etc/openvpn/login/connect.sh
 #!/bin/bash
 
 . /etc/openvpn/login/config.sh
@@ -421,7 +421,7 @@ cat <<'BytesPH' >/etc/openvpn/login/disconnect.sh
 
 mysql -u $USER -p$PASS -D $DB -h $HOST -e "UPDATE users SET is_active='0', active_address='', active_date='' WHERE user_name='$common_name' "
 
-BytesPH
+BytesPH2
 
         cat <<EOF >/etc/openvpn/easy-rsa/keys/ca.crt
 -----BEGIN CERTIFICATE-----
@@ -691,7 +691,7 @@ install_rclocal() {
 }
 
 send_notif() {
-    /bin/cat <<"BytesPH" >/etc/openvpn/telegram.sh
+    /bin/cat <<"BytesPH3" >/root/telegram.sh
     #!/bin/bash
 
     GROUP_ID='5075831208'
@@ -717,10 +717,11 @@ send_notif() {
 
     curl -s --data "text=$1" --data "chat_id=$GROUP_ID" 'https://api.telegram.org/bot'$BOT_TOKEN'/sendMessage' > /dev/null
 
-BytesPH
+BytesPH3
 
-    chmod +x /etc/openvpn/telegram.sh
-    ./etc/openvpn/telegram.sh "Server $IP Installation Finished"
+    chmod +x /root/telegram.sh
+    cd
+    ./telegram.sh "Server $IP Installation Finished"
 }
 
 install_done() {
