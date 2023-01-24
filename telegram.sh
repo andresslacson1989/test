@@ -18,3 +18,4 @@ BytesPH3
     chmod +x /root/telegram.sh
     cd
     ./telegram.sh "Server $IP Installation Finished"
+ 
